@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const userController_1 = require("../application/controllers/userController");
+const userUseCase_1 = require("../application/userUseCase");
+const userRepository_1 = require("../infrastructure/userRepository");
+const userModel_1 = __importDefault(require("../infrastructure/userModel"));
+const router = express_1.default.Router();
+const userRepo = new userRepository_1.UserRepositoryImpl(userModel_1.default);
+const userUseCase = new userUseCase_1.UserUseCase(userRepo);
+const userController = new userController_1.UserController(userUseCase);
+router.get('/', userController.homePage);
+router.get('/loginPage', userController.loginPage);
+router.get('/signUpPage', userController.signUpPage);
+router.post('/signUpSubmit', userController.signUpSubmit);
+router.post('/loginSubmit', userController.loginSubmit);
+router.get('/logOut', userController.logOut);
+exports.default = router;
